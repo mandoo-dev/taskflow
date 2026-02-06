@@ -31,7 +31,13 @@ auth.post('/register', async (c) => {
 
   const existing = db.select().from(users).where(eq(users.email, email)).get();
   if (existing) {
-    return c.json({ error: 'Email already exists' }, 409);
+    // 동일 비밀번호면 idempotent 등록 (토큰 재발급)
+    const match = await compare(password, existing.password);
+    if (!match) {
+      return c.json({ error: 'Email already exists' }, 409);
+    }
+    const token = await sign({ sub: existing.id, email }, JWT_SECRET);
+    return c.json({ token, user: { id: existing.id, email } }, 201);
   }
 
   const hashedPassword = await hash(password, 10);
