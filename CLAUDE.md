@@ -59,3 +59,9 @@ npm run build
 npx playwright test
 npx playwright test path/to/test.spec.ts
 ```
+
+## 코드 컨벤션
+- Typescript strict mode
+- 함수형 컴포넌트 + Hooks
+- 에러는 Zod 스키마로 검증
+- 한글 주석 허용
