@@ -1,10 +1,11 @@
 import { useState } from 'react'
 
 interface LoginProps {
-  onLogin: (credentials: { email: string; password: string }) => void
+  onLogin: (credentials: { email: string; password: string }) => void | Promise<void>
+  errorMessage?: string
 }
 
-export default function Login({ onLogin }: LoginProps) {
+export default function Login({ onLogin, errorMessage }: LoginProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
@@ -45,6 +46,7 @@ export default function Login({ onLogin }: LoginProps) {
         </label>
         <input
           id="email"
+          name="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -65,6 +67,7 @@ export default function Login({ onLogin }: LoginProps) {
         </label>
         <input
           id="password"
+          name="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -78,6 +81,10 @@ export default function Login({ onLogin }: LoginProps) {
           <p className="mt-1 text-sm text-red-600">{errors.password}</p>
         )}
       </div>
+
+      {errorMessage && (
+        <p className="error-message text-sm text-red-600">{errorMessage}</p>
+      )}
 
       <button
         type="submit"
