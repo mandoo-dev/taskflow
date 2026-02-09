@@ -14,7 +14,7 @@ export default function Home() {
             로그인
           </Link>
           <Link
-            to="/signup"
+            to="/register"
             className="inline-block rounded-md border border-blue-600 px-6 py-3 text-blue-600 hover:bg-blue-50"
           >
             회원가입

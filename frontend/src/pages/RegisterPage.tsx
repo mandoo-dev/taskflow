@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -76,6 +76,13 @@ export default function RegisterPage() {
         >
           회원가입
         </button>
+
+        <p className="text-center text-sm text-gray-600">
+          이미 계정이 있으신가요?{' '}
+          <Link to="/login" className="text-blue-600 hover:text-blue-700">
+            로그인
+          </Link>
+        </p>
       </form>
     </div>
   )
