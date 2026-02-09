@@ -2,7 +2,12 @@ import { serve } from '@hono/node-server';
 import { cors } from 'hono/cors';
 import app from './app';
 
-app.use('*', cors());
+app.use('*', cors({
+  origin: [
+    'https://taskflow-3evlaly9j-mandoo-devs-projects.vercel.app',
+    'http://localhost:5173',
+  ],
+}));
 
 const port = Number(process.env.PORT) || 3000;
 
