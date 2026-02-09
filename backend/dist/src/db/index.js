@@ -37,10 +37,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.db = void 0;
+const node_path_1 = __importDefault(require("node:path"));
+const node_fs_1 = __importDefault(require("node:fs"));
 const better_sqlite3_1 = require("drizzle-orm/better-sqlite3");
 const better_sqlite3_2 = __importDefault(require("better-sqlite3"));
 const schema = __importStar(require("./schema"));
-const sqlite = new better_sqlite3_2.default(process.env.DATABASE_URL ?? ':memory:');
+function resolveDatabasePath() {
+    const dbUrl = process.env.DATABASE_URL;
+    if (!dbUrl)
+        return ':memory:';
+    if (dbUrl === ':memory:')
+        return dbUrl;
+    const absolute = node_path_1.default.resolve(dbUrl);
+    node_fs_1.default.mkdirSync(node_path_1.default.dirname(absolute), { recursive: true });
+    return absolute;
+}
+const sqlite = new better_sqlite3_2.default(resolveDatabasePath());
 sqlite.pragma('journal_mode = WAL');
 sqlite.pragma('foreign_keys = ON');
 exports.db = (0, better_sqlite3_1.drizzle)(sqlite, { schema });

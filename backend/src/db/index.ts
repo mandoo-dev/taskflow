@@ -1,8 +1,20 @@
+import path from 'node:path';
+import fs from 'node:fs';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import * as schema from './schema';
 
-const sqlite = new Database(process.env.DATABASE_URL ?? ':memory:');
+function resolveDatabasePath(): string {
+  const dbUrl = process.env.DATABASE_URL;
+  if (!dbUrl) return ':memory:';
+  if (dbUrl === ':memory:') return dbUrl;
+
+  const absolute = path.resolve(dbUrl);
+  fs.mkdirSync(path.dirname(absolute), { recursive: true });
+  return absolute;
+}
+
+const sqlite = new Database(resolveDatabasePath());
 sqlite.pragma('journal_mode = WAL');
 sqlite.pragma('foreign_keys = ON');
 
