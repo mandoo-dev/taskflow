@@ -2,12 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
+  "main": "dist/src/server.js",
   "scripts": {
     "dev": "npx tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/src/server.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
